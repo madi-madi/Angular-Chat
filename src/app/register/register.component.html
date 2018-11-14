@@ -1,0 +1,46 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 offset-md-3">
+			<form [formGroup]="registerForm">
+				<div class="form-group">
+					<label>Email</label>
+					<input type="email" formControlName="email" class="form-control">
+				</div>
+				<div class="form-group">
+					<label>Name</label>
+					<input type="text" formControlName="displayName" class="form-control">
+				</div>
+				<div class="form-group">
+					<label>Photo</label>
+					<!-- <input type="file" > -->
+					<input type="file" formControlName="photoURL" class="form-control" (change)="userService.fileChangeEvent($event)" />
+
+					<image-cropper
+					[imageChangedEvent]="userService.imageChangedEvent"
+					[maintainAspectRatio]="true"
+					[aspectRatio]="4 / 3"
+					[resizeToWidth]="128"
+					format="png"
+					(imageCroppedBase64)="userService.imageCropped($event)"
+					(imageLoaded)="userService.imageLoaded()"
+					(loadImageFailed)="userService.loadImageFailed()"
+					></image-cropper>
+
+					<img [src]="userService.croppedImage" />
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" formControlName="password" class="form-control">
+		            <!-- <label class="error">{{errorMessage}}</label> -->
+	                  <label class="error">{{errorMessage}}</label>
+			          <label class="success">{{successMessage}}</label>
+				</div>
+				<button 
+				type="submit" 
+				class="btn btn-primary"
+				(click)="tryRegister(registerForm.value)" 
+				[disabled]="registerForm.invalid"> Register </button>
+			</form>
+		</div>
+	</div>
+</div>
